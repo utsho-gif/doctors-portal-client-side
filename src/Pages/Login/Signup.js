@@ -1,54 +1,55 @@
-import React from 'react';
+import React from "react";
 import {
-    useSignInWithGoogle,
-    useCreateUserWithEmailAndPassword,
-    useUpdateProfile,
-  } from "react-firebase-hooks/auth";
-  import auth from "../../firebase.init";
-  import { useForm } from "react-hook-form";
-  import Loading from "../Shared/Loading/Loading";
-  import { Link, useNavigate } from "react-router-dom";
+  useSignInWithGoogle,
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
+import { useForm } from "react-hook-form";
+import Loading from "../Shared/Loading/Loading";
+import { Link, useNavigate } from "react-router-dom";
+import useToken from "../../hooks/useToken";
 
 const Signup = () => {
-    const navigate = useNavigate();
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-      } = useForm();
-      const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-      const [
-        createUserWithEmailAndPassword,
-        user,
-        loading,
-        error,
-      ] = useCreateUserWithEmailAndPassword(auth);
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
 
-      const [updateProfile, updating, updateError] = useUpdateProfile(auth);
-    
-      if (loading || gLoading || updating) {
-        return <Loading></Loading>;
-      }
-    
-      let signInError;
-      if (error || gError || updateError) {
-        signInError = (
-          <p className="text-red-500">
-            <small>{error?.message || gError?.message || updateError?.message}</small>
-          </p>
-        );
-      }
-    
-      if (user || gUser) {
-        console.log(user || gUser);
-      }
-      const onSubmit = async (data) => {
-        await createUserWithEmailAndPassword(data.email, data.password);
-        await updateProfile({displayName: data.name})
-        navigate('/appointment');
-      };
-    return (
-        <div className="flex justify-center items-center h-screen">
+  const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+
+  const [token] = useToken(user || gUser);
+
+  const navigate = useNavigate();
+
+  if (loading || gLoading || updating) {
+    return <Loading></Loading>;
+  }
+
+  let signInError;
+  if (error || gError || updateError) {
+    signInError = (
+      <p className="text-red-500">
+        <small>
+          {error?.message || gError?.message || updateError?.message}
+        </small>
+      </p>
+    );
+  }
+
+  if (token) {
+    navigate('/appointment');
+  }
+  const onSubmit = async (data) => {
+    await createUserWithEmailAndPassword(data.email, data.password);
+    await updateProfile({ displayName: data.name });
+  };
+  return (
+    <div className="flex justify-center items-center h-screen">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="text-center text-2xl font-bold">Sign Up</h2>
@@ -65,7 +66,7 @@ const Signup = () => {
                   required: {
                     value: true,
                     message: "Name is required",
-                  }
+                  },
                 })}
               />
               <label className="label">
@@ -165,7 +166,7 @@ const Signup = () => {
         </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default Signup;
