@@ -1,3 +1,4 @@
+import { signOut } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useQuery } from "react-query";
@@ -16,7 +17,9 @@ const MyAppointment = () => {
       }
     }).then((res) => {
       if(res.status === 401 || res.status === 403){
-        navigate('/login');
+        signOut(auth);
+        localStorage.removeItem('accessToken');
+        navigate('/');
       }
       return res.json()
     }
@@ -42,7 +45,7 @@ const MyAppointment = () => {
           </thead>
           <tbody>
               {
-                  appointment.map((a, index) => <tr>
+                  appointment?.map((a, index) => <tr>
                     <th>{index + 1}</th>
                     <td>{a.patientName}</td>
                     <td>{a.date}</td>
