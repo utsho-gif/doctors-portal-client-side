@@ -6,7 +6,6 @@ import BookingModal from "./BookingModal";
 import Service from "./Service";
 
 const AvailableAppoinment = ({ date }) => {
-  // const [services, setServices] = useState([]);
   const [treatment, setTreatment] = useState(null);
   const formatedDate = format(date, "PP");
   //using react query
@@ -18,11 +17,6 @@ const AvailableAppoinment = ({ date }) => {
       if(isLoading){
         return <Loading></Loading>
       }
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/available?date=${formatedDate}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setServices(data));
-  // }, [formatedDate]);
   return (
     <div>
       <h4 className="text-xl text-primary text-center my-10 font-bold">
