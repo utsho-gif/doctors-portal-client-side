@@ -9,11 +9,11 @@ const Users = () => {
     isLoading,
     refetch,
   } = useQuery(["users"], () =>
-    fetch("http://localhost:5000/user", {
-        method: 'GET',
-        headers: {
-            'authorization' : `Bearer ${localStorage.getItem('accessToken')}`
-        }
+    fetch("https://mysterious-woodland-04164.herokuapp.com/user", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     }).then((res) => res.json())
   );
   if (isLoading) {
@@ -33,9 +33,14 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {
-                users.map((user, index)=> <UserRow key={user._id} user={user} index={index} refetch={refetch}></UserRow>)
-            }
+            {users.map((user, index) => (
+              <UserRow
+                key={user._id}
+                user={user}
+                index={index}
+                refetch={refetch}
+              ></UserRow>
+            ))}
           </tbody>
         </table>
       </div>

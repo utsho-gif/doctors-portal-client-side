@@ -9,14 +9,18 @@ const AvailableAppoinment = ({ date }) => {
   const [treatment, setTreatment] = useState(null);
   const formatedDate = format(date, "PP");
   //using react query
-  const { data: services, isLoading, refetch} = useQuery(["available", formatedDate], () =>
-    fetch(`http://localhost:5000/available?date=${formatedDate}`).then((res) =>
-      res.json()
-    )
+  const {
+    data: services,
+    isLoading,
+    refetch,
+  } = useQuery(["available", formatedDate], () =>
+    fetch(
+      `https://mysterious-woodland-04164.herokuapp.com/available?date=${formatedDate}`
+    ).then((res) => res.json())
   );
-      if(isLoading){
-        return <Loading></Loading>
-      }
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <div>
       <h4 className="text-xl text-primary text-center my-10 font-bold">
