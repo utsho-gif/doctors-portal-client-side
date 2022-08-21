@@ -17,6 +17,7 @@ import Users from "./Pages/Dashboard/Users";
 import RequireAdmin from "./Pages/Login/RequireAdmin";
 import AddDoctor from "./Pages/Dashboard/AddDoctor";
 import ManageDoctors from "./Pages/Dashboard/ManageDoctors";
+import UserInfo from "./Pages/Login/UserInfo";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/signup" element={<Signup></Signup>}></Route>
+        <Route path="/userinfo" element={<UserInfo></UserInfo>}></Route>
       </Routes>
       <ToastContainer />
     </div>
